@@ -1,0 +1,16 @@
+{
+  "name": "qwery",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Qwery — forms that start conversations",
+  "scripts": { "build": "bash build.sh" },
+  "dependencies": {
+    "react": "19.2.0",
+    "react-dom": "19.2.0"
+  },
+  "devDependencies": {
+    "esbuild": "0.25.10"
+  },
+  "engines": { "node": "22.x" }
+}
