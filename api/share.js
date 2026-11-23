@@ -7,7 +7,7 @@ export default async function handler(req, res) {
   const slug = String(req.query.slug || '').slice(0, 80);
   const origin = `https://${req.headers['x-forwarded-host'] || req.headers.host}`;
   let shell = '';
-  try { shell = await (await fetch(origin + '/app.html')).text(); } catch { shell = ''; }
+  try { shell = await (await fetch(origin + '/app')).text(); } catch { shell = ''; }
   if (!shell) { res.status(500).send('Unavailable'); return; }
   let form = null;
   try {
