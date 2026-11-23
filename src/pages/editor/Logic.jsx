@@ -70,7 +70,7 @@ function backwardError(content, from, to) {
   return null;
 }
 
-/* ---------- Branching modal (TF 099–108) ---------- */
+/* ---------- Branching modal (Q099–108) ---------- */
 function BranchingModal({ focus, onClose }) {
   const { content, update } = useForm();
   const toast = useToast();
@@ -220,7 +220,7 @@ function ScoringModal({ onClose }) {
   );
 }
 
-/* ---------- Hidden fields (TF 110–112) ---------- */
+/* ---------- Hidden fields (Q110–112) ---------- */
 function HiddenFieldsModal({ onClose }) {
   const { content, update } = useForm();
   const [fields, setFields] = useState([...(content.hidden_fields || [])]);
@@ -249,7 +249,7 @@ function HiddenFieldsModal({ onClose }) {
   );
 }
 
-/* ---------- Variables (TF 113–118) ---------- */
+/* ---------- Variables (Q113–118) ---------- */
 function VariablesModal({ onClose }) {
   const { content, update } = useForm();
   const base = [{ name: 'score', type: 'number', hint: 'For lead scores, quiz results, or anything else you want to score' }, { name: 'price', type: 'number', hint: 'Requires a Payment question' }, { name: 'segment', type: 'text' }];

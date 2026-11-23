@@ -5,6 +5,7 @@ import { AppProvider, useApp } from './lib/store.jsx';
 import { auth } from './lib/sb.js';
 import { match, navigate, useLocation } from './lib/router.js';
 import { PageLoader, ToastHost } from './ui.jsx';
+import { Mark } from './lib/icons.jsx';
 import Landing from './pages/Landing.jsx';
 import { AuthPage } from './pages/Auth.jsx';
 
@@ -25,7 +26,7 @@ const Goodbye = lazy(() => import('./pages/Goodbye.jsx'));
 function Splash() {
   return (
     <div className="splash" role="status" aria-label="Loading Qwery">
-      <div className="bars"><span /><span /></div>
+      <span className="splash-mark"><Mark size={64} color="var(--ink-900)" /></span>
       <p>Make forms worth talking about</p>
     </div>
   );

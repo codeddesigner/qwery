@@ -258,11 +258,8 @@ label.lbl { font-size: 14px; font-weight: 500; display: block; margin-bottom: 6p
 
 /* Splash */
 .splash { position: fixed; inset: 0; background: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px; z-index: 300; }
-.splash .bars { display: flex; gap: 8px; height: 64px; }
-.splash .bars span { background: var(--ink-900); border-radius: 9px; display: block; animation: breathe 1.4s ease-in-out infinite; }
-.splash .bars span:first-child { width: 18px; }
-.splash .bars span:last-child { width: 58px; border-radius: 22px; animation-delay: .15s; }
-@keyframes breathe { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(.82); } }
+.splash-mark { display: block; line-height: 0; animation: breathe 1.4s ease-in-out infinite; }
+@keyframes breathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(.92); } }
 .splash p { font-size: 28px; }
 
 /* ============ Respondent theme variables (overridden per form) ============ */
@@ -328,7 +325,7 @@ textarea.text-answer { resize: none; min-height: 48px; font-family: inherit; }
 .crumb a:hover, .crumb button:hover { color: var(--q-text-primary); }
 .scroll { overflow: auto; }
 
-/* Auth layout (TF 002–009, 288–307) */
+/* Auth layout (Q002–009, 288–307) */
 .auth-page { min-height: 100vh; background: #e6e6e6; padding: 0 0 40px; }
 .auth-nav { display: flex; align-items: center; height: 84px; padding: 0 48px; }
 .auth-nav .mid { display: flex; gap: 40px; margin: 0 auto; font-size: 16px; color: var(--q-text-secondary); }
@@ -378,7 +375,7 @@ textarea.text-answer { resize: none; min-height: 48px; font-family: inherit; }
   .auth-heading { font-size: 28px; }
 }
 
-/* Onboarding shell (TF 011–014) */
+/* Onboarding shell (Q011–014) */
 .onb { min-height: 100vh; background: #fff; display: flex; flex-direction: column; }
 .onb-top { height: 54px; display: flex; align-items: center; padding: 0 16px; position: relative; }
 .steps { position: absolute; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 10px; font-size: 13px; }
@@ -396,7 +393,7 @@ textarea.text-answer { resize: none; min-height: 48px; font-family: inherit; }
 .slide-in { animation: slidein .35s cubic-bezier(.2,.8,.2,1); }
 @keyframes slidein { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
 
-/* Workspace (TF 018–019, 201–232) */
+/* Workspace (Q018–019, 201–232) */
 .ws-shell { min-height: 100vh; background: #fff; display: flex; flex-direction: column; }
 .ws-top { height: 44px; display: flex; align-items: center; padding: 0 16px; gap: 10px; }
 .ws-frame { flex: 1; margin: 0 16px 16px; background: var(--q-bg-canvas); border-radius: 20px; display: flex; flex-direction: column; min-height: 0; }
@@ -429,7 +426,7 @@ textarea.text-answer { resize: none; min-height: 48px; font-family: inherit; }
   .form-head > :nth-child(3), .form-head > :nth-child(4), .form-head > :nth-child(5), .form-head > :nth-child(6) { display: none; }
 }
 
-/* Editor (TF 017–087) */
+/* Editor (Q017–087) */
 .ed { height: 100vh; display: flex; flex-direction: column; background: #fff; overflow: hidden; }
 .ed-head { height: 54px; display: flex; align-items: center; padding: 0 20px; flex: none; }
 .ed-head .tabs-c { display: flex; gap: 20px; }
@@ -617,7 +614,7 @@ textarea.text-answer { resize: none; min-height: 48px; font-family: inherit; }
 .plan-col .fea { display: flex; gap: 8px; align-items: center; color: var(--q-text-primary); }
 .plan-col .fea .icon { width: 14px; height: 14px; }
 
-/* Landing (TF 001) */
+/* Landing (Q001) */
 .land-nav { height: 80px; display: flex; align-items: center; gap: 28px; padding: 10px 20px 0; max-width: 1440px; margin: 0 auto; }
 .land-nav .mid { display: flex; gap: 28px; font-size: 15px; margin: 0 auto; }
 .land-nav .mid button, .land-nav .mid a { display: inline-flex; align-items: center; gap: 4px; text-decoration: none; position: relative; }

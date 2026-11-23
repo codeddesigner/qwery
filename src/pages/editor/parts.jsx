@@ -17,7 +17,7 @@ const STOCK = [
 export const ICON_SET = ['message', 'sparkle', 'star', 'user', 'mail', 'phone', 'globe', 'calendar', 'chart', 'gift', 'bell', 'home', 'image', 'link', 'lock', 'smile', 'thumb', 'zap', 'diamond', 'send'];
 const iconUri = (name, color = '#4d4de1') => 'data:image/svg+xml;utf8,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="-6 -6 32 32"><rect x="-6" y="-6" width="32" height="32" fill="#f3f3fe"/><g style="color:${color}">${document.querySelector(`#icon-src-${name}`)?.innerHTML || ''}</g></svg>`);
 
-/* ---------- Media gallery (TF 036 / 043 / 195) ---------- */
+/* ---------- Media gallery (Q036 / 043 / 195) ---------- */
 export function MediaGallery({ anchor, open, onClose, onPick, allowVideo = true }) {
   const app = useApp();
   const toast = useToast();
@@ -105,7 +105,7 @@ export function IconSources() {
   return <div style={{ display: 'none' }} aria-hidden="true">{ICON_SET.map((n) => <span key={n} id={`icon-src-${n}`}><Icon name={n} /></span>)}</div>;
 }
 
-/* ---------- Image editor (TF 050–052) ---------- */
+/* ---------- Image editor (Q050–052) ---------- */
 export function ImageEditor({ anchor, open, onClose, value, onSave }) {
   const [tab, setTab] = useState('adjust');
   const parse = (v) => ({ b: +(v?.filter?.match(/brightness\(([\d.]+)\)/)?.[1] ?? 1) * 100 - 100, c: +(v?.filter?.match(/contrast\(([\d.]+)\)/)?.[1] ?? 1) * 100 - 100, r: +(v?.transform?.match(/rotate\((-?\d+)deg\)/)?.[1] ?? 0), f: /scaleX\(-1\)/.test(v?.transform || ''), fx: v?.filter?.match(/(grayscale|sepia)\(1\)/)?.[1] || '', crop: v?.crop || 'center' });
@@ -156,7 +156,7 @@ export function ImageEditor({ anchor, open, onClose, value, onSave }) {
   );
 }
 
-/* ---------- Colour picker (TF 058) ---------- */
+/* ---------- Colour picker (Q058) ---------- */
 const PALETTE = ['#7f8f3f', '#6cc9c9', '#f2c94c', '#ea6a1e', '#5aa2f0', '#c1578f', '#4b1d3f', '#4d4de1', '#2f6f8f', '#191919', '#ffffff', '#f7f6f2', '#ffd991', '#a6f0c6', '#e0368c'];
 export function ColorButton({ value, onChange, label }) {
   const ref = useRef(null);
@@ -177,7 +177,7 @@ export function ColorButton({ value, onChange, label }) {
   );
 }
 
-/* ---------- Design tab: themes + theme editor (TF 054–060) ---------- */
+/* ---------- Design tab: themes + theme editor (Q054–060) ---------- */
 export function DesignPanel() {
   const { content, update } = useForm();
   const app = useApp();
@@ -291,7 +291,7 @@ function ThemeCard({ t, name, onClick, onEdit, current, onDelete }) {
   );
 }
 
-/* ---------- Add content modal (TF 016 / 021 / 022) ---------- */
+/* ---------- Add content modal (Q016 / 021 / 022) ---------- */
 export function parseImport(text) {
   const lines = text.split(/\r?\n/).map((l) => l.replace(/\s+$/, '')).filter((l) => l.trim());
   const out = [];
@@ -449,7 +449,7 @@ export function AddContentModal({ onClose, onAdd, initialTab = 'elements' }) {
   );
 }
 
-/* ---------- Form settings (TF 079–085) ---------- */
+/* ---------- Form settings (Q079–085) ---------- */
 const LANGS = ['Arabic', 'English', 'Catalan', 'Chinese (simplified)', 'Chinese (traditional)', 'Croatian', 'Czech', 'Danish', 'Dutch', 'Estonian', 'Finnish', 'French', 'German (formal)', 'German (informal)', 'Greek', 'Hebrew', 'Hungarian', 'Italian', 'Japanese', 'Korean', 'Norwegian', 'Polish', 'Portuguese (Brazil)', 'Portuguese (Portugal)', 'Russian', 'Spanish', 'Swedish', 'Turkish', 'Ukrainian'];
 export function FormSettingsModal({ onClose, initial = 'general' }) {
   const { content, update } = useForm();
@@ -534,7 +534,7 @@ export function FormSettingsModal({ onClose, initial = 'general' }) {
   );
 }
 
-/* ---------- Preview (TF 074–076) ---------- */
+/* ---------- Preview (Q074–076) ---------- */
 export function PreviewModal({ onClose, startAt, initial = 'desktop' }) {
   const { content, form } = useForm();
   const app = useApp();
@@ -557,7 +557,7 @@ export function PreviewModal({ onClose, startAt, initial = 'desktop' }) {
   );
 }
 
-/* ---------- Accessibility (TF 077–078) ---------- */
+/* ---------- Accessibility (Q077–078) ---------- */
 export function AccessibilityPanel({ anchor, open, onClose }) {
   const { content } = useForm();
   const t = content.theme;

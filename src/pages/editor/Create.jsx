@@ -23,7 +23,7 @@ function Editable({ value, onChange, className, placeholder, tag: Tag = 'div', s
   );
 }
 
-/* ---------------- TF 015 / 020: How do you want to build your form? ---------------- */
+/* ---------------- Q015 / 020: How do you want to build your form? ---------------- */
 export function BuildChooser() {
   const { form, ws, update } = useForm();
   const [modal, setModal] = useState(null);
@@ -513,7 +513,7 @@ function RightPanel({ sel }) {
   );
 }
 
-/* ---------------- Picture tile actions (TF 049) ---------------- */
+/* ---------------- Picture tile actions (Q049) ---------------- */
 function TileActions({ tile, q, onClose }) {
   const { update } = useForm();
   const [gallery, setGallery] = useState(!tile.image);
