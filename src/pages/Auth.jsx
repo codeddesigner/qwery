@@ -93,7 +93,7 @@ function AuthShell({ children, preview = 'editor', legal = true }) {
         </div>
       </nav>
       <div className="auth-card">
-        <div className="auth-panel">
+        <div key={location.pathname} className="auth-panel">
           <Mark size={36} />
           <div className="content">{children}</div>
           {legal && <p className="auth-legal">By continuing you agree to Qwery’s <a href="#terms">Terms</a> and <a href="#privacy">Privacy Policy</a>.</p>}

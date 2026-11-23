@@ -5,7 +5,7 @@ import { answerText, CHOICE_TYPES, CONTACT_FIELDS, LETTERS, NO_ANSWER, SCALE_TYP
 import { navigate } from '../../lib/router.js';
 import { db } from '../../lib/sb.js';
 import { planAtLeast, useApp } from '../../lib/store.jsx';
-import { Btn, Check, copy, cx, fmtTime, hoursAgo, IconBtn, Menu, MenuButton, Modal, Popover, QType, Radio, Select, Toggle, useAsync, useToast } from '../../ui.jsx';
+import { Btn, Check, copy, cx, fmtTime, hoursAgo, IconBtn, Menu, MenuButton, Modal, Popover, QType, Radio, Select, Toggle, useAsync, useToast, CountUp } from '../../ui.jsx';
 import { useForm } from '../FormShell.jsx';
 
 const DAY = 86400000;
@@ -38,7 +38,7 @@ export function useResults(formId) {
 function Spark({ data, color = '#191919' }) {
   const w = 60, h = 26, max = Math.max(1, ...data);
   const pts = data.map((d, i) => `${(i / Math.max(1, data.length - 1)) * w},${h - (d / max) * (h - 2) - 1}`).join(' ');
-  return <svg width={w} height={h} aria-hidden="true"><polyline points={`0,${h} ${pts} ${w},${h}`} fill={color === '#191919' ? 'rgba(25,25,25,.08)' : 'rgba(77,77,225,.1)'} stroke="none" /><polyline points={pts} fill="none" stroke={color} strokeWidth="1.5" /></svg>;
+  return <svg className="chart-wipe" width={w} height={h} aria-hidden="true"><polyline points={`0,${h} ${pts} ${w},${h}`} fill={color === '#191919' ? 'rgba(25,25,25,.08)' : 'rgba(77,77,225,.1)'} stroke="none" /><polyline points={pts} fill="none" stroke={color} strokeWidth="1.5" /></svg>;
 }
 
 function LineChart({ days, series }) {
@@ -58,7 +58,7 @@ function LineChart({ days, series }) {
         role="img" aria-label="Responses over time">
         {ticks.map((t) => <g key={t}><line x1={pad} x2={W} y1={y(t)} y2={y(t)} stroke="var(--ink-100)" /><text x={pad - 6} y={y(t) + 3} textAnchor="end" fontSize="8" fill="var(--ink-500)">{Math.round(t)}</text></g>)}
         {series.map((s) => (
-          <g key={s.name}>
+          <g key={s.name} className="chart-wipe">
             {s.fill && <polygon points={`${x(0)},${y(0)} ${s.data.map((d, i) => `${x(i)},${y(d)}`).join(' ')} ${x(days.length - 1)},${y(0)}`} fill="rgba(25,25,25,.05)" />}
             <polyline points={s.data.map((d, i) => `${x(i)},${y(d)}`).join(' ')} fill="none" stroke={s.color} strokeWidth="1.5" strokeDasharray={s.dash ? '4 3' : undefined} />
           </g>
@@ -211,7 +211,7 @@ function Insights({ data }) {
           return (
             <div key={l} className="stat">
               <span className="row gap-6 t-body-s"><span style={{ color: conv ? 'var(--accent-500)' : undefined }}><Icon name={ic} size={16} /></span>{l}</span>
-              <div className="row between" style={{ alignItems: 'flex-end' }}><span className="big">{isPct ? `${v.toFixed(1)}%` : v.toLocaleString()}</span><Spark data={series} color={conv ? '#4d4de1' : '#191919'} /></div>
+              <div className="row between" style={{ alignItems: 'flex-end' }}><span className="big"><CountUp value={v} format={(n) => (isPct ? `${n.toFixed(1)}%` : Math.round(n).toLocaleString())} /></span><Spark data={series} color={conv ? '#4d4de1' : '#191919'} /></div>
               {compare && <span className="row gap-6 t-caption muted"><span className={cx('delta', d < 0 && 'down')} style={conv ? { background: 'var(--accent-100)', color: 'var(--accent-600)' } : undefined}>{d >= 0 ? '↑' : '↓'} {Math.abs(d)}{isPct ? '' : '%'}</span>vs previous {range === 'all' ? 'period' : `${ndays} days`}</span>}
             </div>
           );

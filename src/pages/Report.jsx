@@ -37,7 +37,7 @@ function ReportBody({ title, content, answers, config, editable, onHide }) {
                   return (
                     <div key={c.id} className="row gap-12">
                       {q.type === 'picture_choice' && <span style={{ width: 34, height: 34, borderRadius: 4, background: c.image ? `url("${c.image}") center/cover` : 'rgba(0,0,0,.1)' }} />}
-                      <div className="col gap-4 grow"><span className="row between t-body-s"><span>{c.label}</span><span className="t-caption">{n} resp. <b style={{ marginLeft: 10 }}>{p}%</b></span></span><div style={{ height: 12, background: 'rgba(0,0,0,.06)' }}><div style={{ height: '100%', width: `${p}%`, background: th.bar }} /></div></div>
+                      <div className="col gap-4 grow"><span className="row between t-body-s"><span>{c.label}</span><span className="t-caption">{n} resp. <b style={{ marginLeft: 10 }}>{p}%</b></span></span><div style={{ height: 12, background: 'rgba(0,0,0,.06)' }}><div className="bar-fill" style={{ height: '100%', width: `${p}%`, background: th.bar }} /></div></div>
                     </div>
                   );
                 })

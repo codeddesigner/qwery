@@ -98,6 +98,7 @@ function conversationRuleMatches(content, answers) {
  */
 export default function FormRunner({ content, form, mode = 'preview', orgName, plan = 'free', startAt, frame = 'full', onDone, hiddenValues }) {
   const qs = content.questions;
+  const dir = useRef(1);
   const [idx, setIdx] = useState(() => Math.max(0, startAt ? qs.findIndex((q) => q.id === startAt) : 0));
   const [answers, setAnswers] = useState(() => {
     if (mode !== 'live' || !content.settings?.autosave) return {};
@@ -188,6 +189,7 @@ export default function FormRunner({ content, form, mode = 'preview', orgName, p
 
   const go = (val) => {
     if (!q) return;
+    dir.current = 1;
     const cur = { ...answers, ...(val !== undefined && !(val && val.nativeEvent) ? { [q.id]: val } : {}) };
     const msg = validate(q, cur[q.id]);
     if (msg) { setError(msg); return; }
@@ -205,6 +207,7 @@ export default function FormRunner({ content, form, mode = 'preview', orgName, p
   };
   const back = () => {
     if (ending) return;
+    dir.current = -1;
     setHistory((h) => { if (!h.length) return h; const n = [...h]; const p = n.pop(); setIdx(p); return n; });
     setError(null);
   };
@@ -261,7 +264,7 @@ export default function FormRunner({ content, form, mode = 'preview', orgName, p
           {ending ? (
             <Ending ending={ending} content={content} answers={answers} hidden={hidden} vars={vars} offerConversation={offerConversation} orgName={orgName} onStartConversation={() => startConversation()} busy={convBusy} mode={mode} mobile={mobile} />
           ) : (
-            <div key={q.id} className="resp-q slide-in" style={{ fontSize: `${bigSize}em`, textAlign: align === 'center' ? 'center' : undefined, justifyContent: align }}>
+            <div key={q.id} className={cx('resp-q slide-in', dir.current < 0 && 'from-above')} style={{ fontSize: `${bigSize}em`, textAlign: align === 'center' ? 'center' : undefined, justifyContent: align }}>
               {layout === 'float' && media && !mobile ? (
                 <div className="row gap-32" style={{ alignItems: 'center', width: '100%' }}>
                   <div className="grow">{renderBlock()}</div>

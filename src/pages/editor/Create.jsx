@@ -579,7 +579,7 @@ export default function Create() {
         <AccessibilityPanel anchor={a11yRef} open={a11y} onClose={() => setA11y(false)} />
         <div className="ed-stage">
           <span id="tile-anchor" style={{ position: 'absolute', left: '50%', top: '40%' }} />
-          <Canvas sel={sel} mobile={mobile} onTile={(id) => setTile(q?.choices.find((c) => c.id === id))} />
+          <Canvas key={sel} sel={sel} mobile={mobile} onTile={(id) => setTile(q?.choices.find((c) => c.id === id))} />
         </div>
       </div>
       <RightPanel sel={sel} />

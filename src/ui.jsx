@@ -178,23 +178,33 @@ export function Select({ value, options, onChange, placeholder = 'Select…', cl
 }
 
 // ---------- Modal ----------
+export const reducedMotion = () => typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
+
 export function Modal({ open = true, onClose, title, children, footer, width = 460, className, canvas, hideClose, bodyStyle }) {
+  // Play the exit animation before handing control back to the parent (Esc, backdrop and the close button).
+  const [closing, setClosing] = useState(false);
+  const close = useCallback(() => {
+    if (!onClose) return;
+    if (reducedMotion()) { onClose(); return; }
+    setClosing(true);
+    setTimeout(() => onClose(), 160);
+  }, [onClose]);
   useEffect(() => {
     if (!open) return;
-    const k = (e) => { if (e.key === 'Escape') onClose?.(); };
+    const k = (e) => { if (e.key === 'Escape') close(); };
     document.addEventListener('keydown', k);
     const prev = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
     return () => { document.removeEventListener('keydown', k); document.body.style.overflow = prev; };
-  }, [open, onClose]);
+  }, [open, close]);
   if (!open) return null;
   return createPortal(
-    <div className="overlay" onMouseDown={(e) => { if (e.target === e.currentTarget) onClose?.(); }}>
+    <div className={cx('overlay', closing && 'closing')} onMouseDown={(e) => { if (e.target === e.currentTarget) close(); }}>
       <div className={cx('modal', canvas && 'canvas', className)} style={{ maxWidth: width }} role="dialog" aria-modal="true" aria-label={typeof title === 'string' ? title : undefined}>
         {(title || !hideClose) && (
           <div className="modal-head">
             {typeof title === 'string' ? <h2>{title}</h2> : title || <span />}
-            {!hideClose && <IconBtn icon="x" label="Close" onClick={onClose} />}
+            {!hideClose && <IconBtn icon="x" label="Close" onClick={close} />}
           </div>
         )}
         <div className="modal-body" style={bodyStyle}>{children}</div>
@@ -223,19 +233,23 @@ export function ToastHost({ children }) {
   const push = useCallback((msg, opts = {}) => {
     const id = Math.random();
     setItems((x) => [...x, { id, msg, ...opts }]);
-    setTimeout(() => setItems((x) => x.filter((t) => t.id !== id)), opts.ms || 3200);
+    setTimeout(() => dismiss(id), opts.ms || 3200);
   }, []);
+  function dismiss(id) {
+    setItems((x) => x.map((t) => (t.id === id ? { ...t, leaving: true } : t)));
+    setTimeout(() => setItems((x) => x.filter((t) => t.id !== id)), 200);
+  }
   return (
     <ToastCtx.Provider value={push}>
       {children}
       {createPortal(
         <div className="toasts" aria-live="polite">
           {items.map((t) => (
-            <div key={t.id} className="toast">
+            <div key={t.id} className={cx('toast', t.leaving && 'leaving')}>
               {t.ok && <span className="ok"><Icon name="check" size={12} /></span>}
               {t.error && <span className="ok" style={{ background: 'var(--red-500)' }}><Icon name="x" size={12} /></span>}
               <span>{t.msg}</span>
-              <button aria-label="Dismiss" onClick={() => setItems((x) => x.filter((y) => y.id !== t.id))} style={{ color: '#fff', opacity: .7 }}><Icon name="x" /></button>
+              <button aria-label="Dismiss" onClick={() => dismiss(t.id)} style={{ color: '#fff', opacity: .7 }}><Icon name="x" /></button>
             </div>
           ))}
         </div>, document.body)}
@@ -243,6 +257,25 @@ export function ToastHost({ children }) {
   );
 }
 export const useToast = () => useContext(ToastCtx);
+
+// Counts up to a number when it first appears (and eases between later changes).
+export function CountUp({ value = 0, format = (n) => Math.round(n).toLocaleString(), ms = 700 }) {
+  const [n, setN] = useState(() => (reducedMotion() ? value : 0));
+  const from = useRef(0);
+  useEffect(() => {
+    if (reducedMotion()) { setN(value); return; }
+    const start = performance.now(), a = from.current, b = Number(value) || 0;
+    let raf;
+    const tick = (t) => {
+      const k = Math.min(1, (t - start) / ms), e = 1 - Math.pow(1 - k, 3);
+      const v = a + (b - a) * e; from.current = v; setN(v);
+      if (k < 1) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [value, ms]);
+  return <>{format(n)}</>;
+}
 
 export function Spinner({ size = 18 }) { return <span className="spin" style={{ width: size, height: size }} />; }
 export function PageLoader() { return <div className="page-loader"><Spinner size={24} /></div>; }

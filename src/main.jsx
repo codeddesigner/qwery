@@ -27,7 +27,7 @@ function Splash() {
   return (
     <div className="splash" role="status" aria-label="Loading Qwery">
       <span className="splash-mark"><Mark size={64} color="var(--ink-900)" /></span>
-      <p>Make forms worth talking about</p>
+      <p className="splash-line">Make forms worth talking about</p>
     </div>
   );
 }
@@ -70,7 +70,9 @@ function Routes() {
     if ((m = match('/account/:page?', path))) return <Guard><Settings area="account" page={m.page || 'settings'} /></Guard>;
     return <NotFound />;
   })();
-  return <Suspense fallback={<Splash />}>{page}</Suspense>;
+  const seg = path.split('/');
+  const routeKey = ['forms', 'to', 'c', 'report'].includes(seg[1]) ? seg.slice(0, 3).join('/') : seg.slice(0, 2).join('/');
+  return <Suspense fallback={<Splash />}><div key={routeKey} className="route">{page}</div></Suspense>;
 }
 
 function NotFound() {

@@ -393,7 +393,7 @@ export default function Workspace({ wsId }) {
             )}
           </aside>
 
-          <main className="ws-main">
+          <main key={ws.id} className="ws-main">
             <div className="row gap-12 wrap" style={{ paddingBottom: 18, borderBottom: '1px solid var(--q-border-default)' }}>
               <h1 className="t-h1" style={{ fontSize: 28 }}>{ws.name}</h1>
               <MenuButton trigger={<IconBtn icon="more" label="Workspace options" />} items={wsMenu} align="left" />
@@ -429,7 +429,7 @@ export default function Workspace({ wsId }) {
                 {canEdit && <Btn icon="plus" onClick={newForm}>Create a new form</Btn>}
               </div>
             ) : view === 'list' ? (
-              <div className="col gap-8" style={{ marginTop: suggestions.length ? 0 : 22 }}>
+              <div key="list" className="col gap-8" style={{ marginTop: suggestions.length ? 0 : 22 }}>
                 <div className="form-head"><span /><span>Responses</span><span>Completion</span><span>Conversations</span><span>Updated</span><span>Integrations</span><span /></div>
                 {sorted.map((f) => (
                   <div key={f.id} className="form-row" onClick={() => navigate(`/forms/${f.id}/create`)} role="link" tabIndex={0} onKeyDown={(e) => e.key === 'Enter' && navigate(`/forms/${f.id}/create`)}>
@@ -444,7 +444,7 @@ export default function Workspace({ wsId }) {
                 ))}
               </div>
             ) : (
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(190px, 1fr))', gap: 14, marginTop: suggestions.length ? 0 : 22 }}>
+              <div key="grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(190px, 1fr))', gap: 14, marginTop: suggestions.length ? 0 : 22 }}>
                 {sorted.map((f) => (
                   <div key={f.id} className="form-tile" onClick={() => navigate(`/forms/${f.id}/create`)}>
                     <span className="sw" style={{ background: f.color }} />

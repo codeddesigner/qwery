@@ -677,3 +677,142 @@ textarea.text-answer { resize: none; min-height: 48px; font-family: inherit; }
 .code-box { background: var(--ink-950); color: #e3e3e3; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; border-radius: 10px; padding: 14px; white-space: pre-wrap; word-break: break-all; }
 .heat { display: grid; grid-template-columns: 14px repeat(6, 1fr); gap: 4px; font-size: 10px; align-items: center; }
 .heat span.c { height: 14px; border-radius: 3px; }
+
+/* ======================================================================
+   Motion
+   One easing family, three durations. Enter animations use fill-mode
+   "backwards" so they never pin a transform and block hover/press states.
+   ====================================================================== */
+:root {
+  --ease-out: cubic-bezier(.2, .8, .2, 1);
+  --ease-spring: cubic-bezier(.34, 1.4, .64, 1);
+  --ease-in: cubic-bezier(.4, 0, 1, 1);
+  --dur-1: .12s; --dur-2: .2s; --dur-3: .32s;
+}
+@keyframes m-fade { from { opacity: 0; } }
+@keyframes m-fade-out { to { opacity: 0; } }
+@keyframes m-rise { from { opacity: 0; transform: translateY(10px); } }
+@keyframes m-rise-sm { from { opacity: 0; transform: translateY(6px); } }
+@keyframes m-drop { from { opacity: 0; transform: translateY(-14px); } }
+@keyframes m-scale-in { from { opacity: 0; transform: scale(.96); } }
+@keyframes m-pop { 0% { transform: scale(.6); } 60% { transform: scale(1.12); } 100% { transform: scale(1); } }
+@keyframes m-press { 0% { transform: scale(1); } 40% { transform: scale(.94); } 100% { transform: scale(1); } }
+@keyframes m-grow-x { from { transform: scaleX(0); } }
+@keyframes m-wipe { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+@keyframes m-shake { 0%, 100% { transform: none; } 20%, 60% { transform: translateX(-5px); } 40%, 80% { transform: translateX(5px); } }
+@keyframes m-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+
+/* Pages: opacity only, so position:fixed children stay pinned to the viewport */
+.route { animation: m-fade var(--dur-3) var(--ease-out); }
+.ed > header + *, .set-main .inner, .ws-main, .auth-panel, .res-body { animation: m-rise-sm var(--dur-3) var(--ease-out) backwards; }
+
+/* Splash */
+.splash-mark { animation: m-scale-in .5s var(--ease-spring) backwards, breathe 1.6s ease-in-out .5s infinite; }
+.splash-line { animation: m-rise .5s var(--ease-out) .15s backwards; }
+
+/* Overlays */
+.overlay { animation: m-fade var(--dur-2) var(--ease-out); backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px); }
+.modal { animation: m-scale-in .24s var(--ease-spring); transform-origin: 50% 60%; }
+.overlay.closing { animation: m-fade-out .16s var(--ease-in) forwards; }
+.overlay.closing .modal { transition: transform .16s var(--ease-in); transform: scale(.97) translateY(4px); }
+.pop { animation: m-scale-in .16s var(--ease-out); transform-origin: top center; }
+.pop .menu-item { animation: m-rise-sm .18s var(--ease-out) backwards; }
+.pop .menu-item:nth-child(2) { animation-delay: 15ms; } .pop .menu-item:nth-child(3) { animation-delay: 30ms; }
+.pop .menu-item:nth-child(4) { animation-delay: 45ms; } .pop .menu-item:nth-child(5) { animation-delay: 60ms; }
+.pop .menu-item:nth-child(6) { animation-delay: 75ms; } .pop .menu-item:nth-child(n+7) { animation-delay: 90ms; }
+.toast { animation: m-rise .28s var(--ease-spring); transition: opacity .18s, transform .18s var(--ease-in); }
+.toast.leaving { opacity: 0; transform: translateY(8px) scale(.98); }
+
+/* Press + hover feedback */
+.btn, .icon-btn, .ok-btn, .toptab, .tab, .chip, .social-btn { transition: background .15s, box-shadow .15s, color .15s, opacity .15s, transform .12s var(--ease-out); }
+.btn:active:not(:disabled), .ok-btn:active, .social-btn:active { transform: scale(.97); }
+.icon-btn:active:not(:disabled) { transform: scale(.9); }
+.btn:disabled { transform: none; }
+.form-tile, .int-card, .big-option, .land-tile, .plan-col, .layout-opt, .suggest, .qtile, .cat-item, .el-item {
+  transition: transform .2s var(--ease-out), box-shadow .2s var(--ease-out), border-color .15s, background .15s;
+}
+.form-tile:hover, .int-card:hover, .big-option:hover, .land-tile:hover, .layout-opt:hover, .suggest:hover { transform: translateY(-2px); box-shadow: var(--elev-2); }
+.plan-col:hover { transform: translateY(-3px); }
+.form-row { transition: box-shadow .15s, transform .15s var(--ease-out), background .15s; }
+.form-row:hover { transform: translateX(2px); }
+.form-tile:active, .big-option:active, .int-card:active { transform: translateY(0) scale(.99); }
+
+/* Lists and grids: stagger on mount */
+:is(.form-row, .form-tile, .int-card, .plan-col, .big-option, .land-tile, .thread, .qitem, .suggest, .stat, .set-card, .layout-opt, .cat-item, .el-item, .qtile, .rule-block, .logic-card, .tbl tbody tr) {
+  animation: m-rise-sm var(--dur-3) var(--ease-out) backwards;
+}
+:is(.form-row, .form-tile, .int-card, .plan-col, .big-option, .land-tile, .thread, .qitem, .suggest, .stat, .set-card, .layout-opt, .cat-item, .el-item, .qtile, .rule-block, .logic-card, .tbl tbody tr):nth-child(2) { animation-delay: 30ms; }
+:is(.form-row, .form-tile, .int-card, .plan-col, .big-option, .land-tile, .thread, .qitem, .suggest, .stat, .set-card, .layout-opt, .cat-item, .el-item, .qtile, .rule-block, .logic-card, .tbl tbody tr):nth-child(3) { animation-delay: 60ms; }
+:is(.form-row, .form-tile, .int-card, .plan-col, .big-option, .land-tile, .thread, .qitem, .suggest, .stat, .set-card, .layout-opt, .cat-item, .el-item, .qtile, .rule-block, .logic-card, .tbl tbody tr):nth-child(4) { animation-delay: 90ms; }
+:is(.form-row, .form-tile, .int-card, .plan-col, .big-option, .land-tile, .thread, .qitem, .suggest, .stat, .set-card, .layout-opt, .cat-item, .el-item, .qtile, .rule-block, .logic-card, .tbl tbody tr):nth-child(5) { animation-delay: 120ms; }
+:is(.form-row, .form-tile, .int-card, .plan-col, .big-option, .land-tile, .thread, .qitem, .suggest, .stat, .set-card, .layout-opt, .cat-item, .el-item, .qtile, .rule-block, .logic-card, .tbl tbody tr):nth-child(6) { animation-delay: 150ms; }
+:is(.form-row, .form-tile, .int-card, .plan-col, .big-option, .land-tile, .thread, .qitem, .suggest, .stat, .set-card, .layout-opt, .cat-item, .el-item, .qtile, .rule-block, .logic-card, .tbl tbody tr):nth-child(7) { animation-delay: 180ms; }
+:is(.form-row, .form-tile, .int-card, .plan-col, .big-option, .land-tile, .thread, .qitem, .suggest, .stat, .set-card, .layout-opt, .cat-item, .el-item, .qtile, .rule-block, .logic-card, .tbl tbody tr):nth-child(n+8) { animation-delay: 210ms; }
+.qitem.dragging, .qitem[class*='drop-'] { animation: none; }
+
+/* Controls */
+.toggle::after { transition: transform .25s var(--ease-spring), background .15s, width .15s; }
+.toggle:not(:disabled):active::after { width: 15px; }
+.toggle.on:not(:disabled):active::after { transform: translateX(9px); }
+.check svg, .radio.on { animation: m-pop .22s var(--ease-spring); }
+.seg button, .seg > * { transition: background .18s var(--ease-out), color .18s, box-shadow .18s; }
+.input, .field, .textarea { transition: border-color .15s, background .15s, box-shadow .2s var(--ease-out); }
+.err { animation: m-rise-sm .2s var(--ease-out); }
+
+/* Respondent flow */
+.slide-in { animation: slidein .45s var(--ease-out) backwards; }
+.slide-in.from-above { animation-name: m-drop; }
+.resp-q .q-title, .resp-q .q-desc { animation: m-rise-sm .45s var(--ease-out) backwards; }
+.resp-q .q-desc { animation-delay: 40ms; }
+.resp-q :is(.choice, .pic-choice, .scale-cell) { animation: m-rise-sm .35s var(--ease-out) backwards; }
+.resp-q :is(.choice, .pic-choice, .scale-cell):nth-child(2) { animation-delay: 70ms; }
+.resp-q :is(.choice, .pic-choice, .scale-cell):nth-child(3) { animation-delay: 100ms; }
+.resp-q :is(.choice, .pic-choice, .scale-cell):nth-child(4) { animation-delay: 130ms; }
+.resp-q :is(.choice, .pic-choice, .scale-cell):nth-child(5) { animation-delay: 160ms; }
+.resp-q :is(.choice, .pic-choice, .scale-cell):nth-child(n+6) { animation-delay: 190ms; }
+.resp-q .ok-btn { animation: m-rise-sm .35s var(--ease-out) .12s backwards; }
+.choice, .pic-choice, .scale-cell { transition: background .12s, box-shadow .12s, transform .12s var(--ease-out), color .12s; }
+.choice:active, .pic-choice:active { transform: scale(.985); }
+.scale-cell:active { transform: scale(.92); }
+.choice.on .key, .pic-choice.on .cap .key { animation: m-pop .28s var(--ease-spring); }
+.choice.on .tick { animation: m-pop .28s var(--ease-spring); }
+.scale-cell.on { animation: m-press .28s var(--ease-out); }
+.resp-q .err, .resp-q [role='alert'] { animation: m-shake .36s var(--ease-out); }
+.progress > div { transition: width .5s var(--ease-out); }
+.text-answer:focus { border-bottom-color: var(--t-answer); }
+
+/* Editor */
+.ed-stage .qcard { animation: m-scale-in .26s var(--ease-out) backwards; }
+.qitem { transition: background .15s, box-shadow .15s, transform .15s var(--ease-out); }
+
+/* Conversations */
+.msg { animation: m-rise-sm .26s var(--ease-out) backwards; transform-origin: bottom left; }
+
+/* Data */
+.bar-track > div, .bar-fill { transform-origin: left center; animation: m-grow-x .8s var(--ease-out) backwards; }
+.bar-track > div { transition: width .5s var(--ease-out); }
+.chart-wipe { animation: m-wipe 1s var(--ease-out) backwards; }
+svg circle[stroke-dasharray] { transition: stroke-dasharray .6s var(--ease-out), stroke-dashoffset .6s var(--ease-out); }
+.stat .big { font-variant-numeric: tabular-nums; }
+
+/* Landing */
+.land-nav { animation: m-fade .5s var(--ease-out) backwards; }
+.land-copy > * { animation: m-rise .7s var(--ease-out) backwards; }
+.land-copy > :nth-child(1) { animation-delay: .1s; }
+.land-copy > :nth-child(2) { animation-delay: .22s; }
+.land-copy > :nth-child(3) { animation-delay: .34s; }
+.collage .lines { animation: m-float 6s ease-in-out infinite; }
+.collage .card:nth-child(2n) .lines { animation-duration: 7.5s; animation-delay: -2s; }
+.collage .card:nth-child(3n) .lines { animation-duration: 9s; animation-delay: -4s; }
+@supports (animation-timeline: view()) {
+  .land-section > h2, .land-section > .row, .land-grid {
+    animation: m-rise linear both; animation-timeline: view(); animation-range: entry 0% cover 28%;
+  }
+}
+
+/* Respect reduced motion: keep state changes, drop movement */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-delay: 0s !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+  .spin { animation: spin 1.2s linear infinite !important; }
+  .overlay { backdrop-filter: none; }
+}

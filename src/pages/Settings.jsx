@@ -29,7 +29,7 @@ function Shell({ area, page, children }) {
             <button className="u" style={{ alignSelf: 'flex-start' }} onClick={() => navigate(area === 'org' ? '/account' : '/org/admin')}>{area === 'org' ? 'See your settings' : 'See admin settings'}</button>
           </div>
         </aside>
-        <main className="set-main"><div className="inner">{children}</div></main>
+        <main className="set-main"><div key={page} className="inner">{children}</div></main>
       </div>
     </div>
   );
